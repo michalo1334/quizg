@@ -30,10 +30,10 @@ class Quiz extends ChangeNotifier {
   }
 
   static Future<Quiz> fromRemoteEndpointJson(String url,
-      {bool shuffle = false, onFinished}) async {
+      {bool shuffle = false, onFinished, allSingleChoice = false}) async {
     var response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
-      var questions = List<Question>.from(jsonDecode(utf8.decode(response.bodyBytes)).map((e) => Question.fromJson(e)));
+      var questions = List<Question>.from(jsonDecode(utf8.decode(response.bodyBytes)).map((e) => allSingleChoice ? Question.fromJson(e).asSingleChoice() : Question.fromJson(e).asMultipleChoice()));
       return Quiz(questions, shuffle: shuffle, onFinished: onFinished);
     } else {
       throw Exception('Failed to load questions');

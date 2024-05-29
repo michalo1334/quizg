@@ -1,0 +1,46 @@
+name: Build Flutter Web App
+
+#workflow_dispatch, push
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+
+jobs:
+  build_web:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.x' # Specify the Flutter version
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Clean
+        run:
+          flutter clean
+
+      - name: Build Web
+        run:
+          flutter build web --release --web-renderer html --base-href /quizg/
+
+
+      - name: Upload Build
+        uses: actions/upload-artifact@v2
+        with:
+          name: web-build
+          path: build/web/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web

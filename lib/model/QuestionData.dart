@@ -1,4 +1,7 @@
-import 'package:flutter/cupertino.dart';
+enum QuestionType {
+  singleChoice,
+  multipleChoice,
+}
 
 class QuestionData {
   //Plain or markdown
@@ -12,11 +15,14 @@ class QuestionData {
   //Plain or markdown
   final String explanation;
 
+  final QuestionType type;
+
   QuestionData({
     this.questionText = "No data",
     this.choices = const [],
     this.correct = const {},
-    this.explanation = ""
+    this.explanation = "",
+    this.type = QuestionType.multipleChoice,
   });
 
   /*
@@ -39,7 +45,8 @@ class QuestionData {
                 questionText: questionText,
                 choices: List<String>.from(choices),
                 correct: Set<int>.from(correct),
-                explanation: explanation
+                explanation: explanation,
+                type: json['type'] == null ? QuestionType.multipleChoice : json['type'] == "singleChoice" ? QuestionType.singleChoice : QuestionType.multipleChoice
             ),
         _ => throw const FormatException("Invalid JSON")
       };
@@ -64,12 +71,16 @@ Map<String, String> letteredChoiceTexts({bool shuffle = false}) =>
 bool isCorrect(int? choiceIndex) =>
     choiceIndex == null ? correct == <int>{} : correct.contains(choiceIndex);
 
+bool get isSingleChoice => type == QuestionType.singleChoice;
+bool get isMultipleChoice => type == QuestionType.multipleChoice;
+
 
 String toJson() => '''
   {
     "question": "$questionText",
     "choices": ${choices.map((e) => '"$e"').toList()},
     "correct": $correct,
-    "explanation": "$explanation"
+    "explanation": "$explanation",
+    "type": "${type == QuestionType.singleChoice ? "singleChoice" : "multipleChoice"}"
   }
   ''';}

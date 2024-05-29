@@ -11,19 +11,14 @@ class Question extends ChangeNotifier {
   //Indices of selected choices
   Set<int> selected = {};
 
-  final bool exactlyOne;
-
-  Question(this.data, {this.exactlyOne = false});
-
-  Question.singleChoice(this.data) : exactlyOne = true;
-  Question.multipleChoice(this.data) : exactlyOne = false;
+  Question(this.data);
 
   factory Question.fromJson(Map<String, dynamic> json) {
     return Question(QuestionData.fromJson(json));
   }
 
   void select(int choiceIndex) {
-    if(exactlyOne) {
+    if(data.isSingleChoice) {
       selected.clear();
 
       selected.add(choiceIndex);
@@ -36,7 +31,7 @@ class Question extends ChangeNotifier {
   }
 
   void deselect(int choiceIndex) {
-    if(exactlyOne) {
+    if(data.isSingleChoice) {
       //Do nothing - in single choice mode, you can't deselect once selected
     }
     else {
@@ -66,14 +61,6 @@ class Question extends ChangeNotifier {
     return selected.contains(choiceIndex);
   }
 
-  bool get isSingleChoice => exactlyOne;
-  bool get isMultipleChoice => !exactlyOne;
-
-  Question asSingleChoice() {
-    return Question(data, exactlyOne: true);
-  }
-
-  Question asMultipleChoice() {
-    return Question(data, exactlyOne: false);
-  }
+  bool get isSingleChoice => data.isSingleChoice;
+  bool get isMultipleChoice => data.isMultipleChoice;
 }

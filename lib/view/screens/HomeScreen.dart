@@ -6,7 +6,7 @@ import 'QuestionScreen.dart';
 class HomeScreen extends StatelessWidget {
 
   Future<Quiz> futureQuiz1 = Quiz.fromRemoteEndpointJson("https://quiz-json-data.fra1.digitaloceanspaces.com/AWWW_egzamin0.json");
-  Future<Quiz> futureQuiz2 = Quiz.fromRemoteEndpointJson("https://quiz-json-data.fra1.digitaloceanspaces.com/Grafika_egzamin0.json", allSingleChoice: true);
+  Future<Quiz> futureQuiz2 = Quiz.fromRemoteEndpointJson("https://quiz-json-data.fra1.digitaloceanspaces.com/Grafika_egzamin0.json");
 
   HomeScreen({super.key});
 

@@ -13,6 +13,8 @@ class SummaryScreen extends StatelessWidget {
   . widget .
   """;
 
+  bool isMobile(BuildContext context) => MediaQuery.of(context).size.width < 600;
+
   const SummaryScreen({super.key, required this.quiz});
 
   @override
@@ -25,7 +27,7 @@ class SummaryScreen extends StatelessWidget {
         ],
       ),
         body: LayoutGrid(
-            columnSizes: [1.fr, 10.fr, 1.fr],
+            columnSizes: [1.fr, 90.fr, 1.fr],
             rowSizes: [1.fr, 10.fr],
             areas: SummaryScreen.layout,
             children: [
@@ -64,7 +66,7 @@ class SummaryScreen extends StatelessWidget {
       itemCount: quiz.questions.length,
       itemBuilder: (context, index) {
         var question = quiz.questions[index];
-        return SizedBox(height: 400, child: QuestionWidget(question: question, previewOnly: true));
+        return FractionallySizedBox(widthFactor: isMobile(context) ? 1.0 : 0.7, child: SizedBox(height: 400, child: QuestionWidget(question: question, previewOnly: true)));
       },
     );
   }

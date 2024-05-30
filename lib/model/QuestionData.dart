@@ -1,9 +1,13 @@
+import 'package:mongo_dart/mongo_dart.dart';
+
 enum QuestionType {
   singleChoice,
   multipleChoice,
 }
 
 class QuestionData {
+  final ObjectId? mongodbID;
+
   //Plain or markdown
   final String questionText;
 
@@ -23,6 +27,7 @@ class QuestionData {
     this.correct = const {},
     this.explanation,
     this.type = QuestionType.multipleChoice,
+    this.mongodbID,
   });
 
   factory QuestionData.fromMap(Map<String, dynamic> map) => QuestionData(
@@ -34,7 +39,8 @@ class QuestionData {
           ? QuestionType.multipleChoice
           : map["type"] == "singleChoice"
               ? QuestionType.singleChoice
-              : QuestionType.multipleChoice);
+              : QuestionType.multipleChoice,
+      mongodbID: map["_id"]);
 
 //Return mapping letter->choice index, optionally shuffle
   Map<String, int> letteredChoices({bool shuffle = false}) {
@@ -59,13 +65,11 @@ class QuestionData {
 
   bool get isMultipleChoice => type == QuestionType.multipleChoice;
 
-  String toJson() => '''
-  {
-    "question": "$questionText",
-    "choices": ${choices.map((e) => '"$e"').toList()},
-    "correct": $correct,
-    "explanation": "$explanation",
-    "type": "${type == QuestionType.singleChoice ? "singleChoice" : "multipleChoice"}"
-  }
-  ''';
+  Map<String, dynamic> toMap() => {
+    "question": questionText,
+    "choices": choices,
+    "correct": correct.toList(),
+    "explanation": explanation,
+    "type": type == QuestionType.singleChoice ? "singleChoice" : "multipleChoice",
+  };
 }

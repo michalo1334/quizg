@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
+import 'package:quizg/model/QuizManager.dart';
 import 'package:quizg/view/Question/QuestionWidget.dart';
 
 import '../../model/Quiz.dart';

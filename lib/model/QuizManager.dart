@@ -67,4 +67,25 @@ class QuizManager {
 
     return quizzesMap;
   }
+
+  //Selected choices == correct
+  Future<bool> updateQuestionDataInDB(Question question) async {
+
+    var map = question.data.toMap();
+    map['correct'] = question.selected.toList();
+
+
+    var db = mongo.Db(connectionString);
+    await db.open();
+    var collection = db.collection(collectionName);
+
+    var result = await collection.updateOne(
+      mongo.where.eq("_id", question.data.mongodbID),
+      mongo.modify.set('correct', map['correct'])
+    );
+
+    await db.close();
+
+    return result.isSuccess;
+  }
 }

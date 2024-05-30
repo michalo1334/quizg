@@ -3,6 +3,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:quizg/model/QuizManager.dart';
 
 import '../../model/Question/Question.dart';
 import '../../model/Quiz.dart';
@@ -11,6 +12,10 @@ class QuestionWidget extends StatefulWidget {
   final Question question;
 
   final bool _previewOnly;
+
+  final bool _enableEdit = true;
+
+  bool get enableEdit => _enableEdit;
 
   bool get previewOnly => _previewOnly;
 
@@ -71,6 +76,18 @@ class _QuestionWidgetState extends State<QuestionWidget> {
     );
   }
 
+  Widget _buildSaveChanges(BuildContext context) {
+    return IconButton(
+      onPressed: () async {
+        var success = await QuizManager.instance.updateQuestionDataInDB(widget.question);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(success ? "Zmiany zapisane (lista poprawnych odpowiedzi)" : "Błąd zapisu"),
+        ));
+      },
+      icon: Icon(Icons.save),
+    );
+  }
+
   Widget _buildQuestionScore(BuildContext context) {
     return Align(
       alignment: Alignment.topLeft,
@@ -81,9 +98,14 @@ class _QuestionWidgetState extends State<QuestionWidget> {
   Widget _buildExplanationButton(BuildContext context) {
     return Align(
       alignment: Alignment.topRight,
-      child: IconButton(
-          onPressed: (){_showExplanationModalSheet(context);},
-          icon: Icon(Icons.info, color: widget.question.data.explanation == null ? Colors.grey : Colors.red)
+      child: Column(
+        children: [
+          IconButton(
+              onPressed: (){_showExplanationModalSheet(context);},
+              icon: Icon(Icons.info, color: widget.question.data.explanation == null ? Colors.grey : Colors.red)
+          ),
+          if(widget.enableEdit) _buildSaveChanges(context),
+        ],
       ),
     );
   }

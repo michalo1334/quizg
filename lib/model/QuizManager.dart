@@ -64,7 +64,7 @@ class QuizManager {
 
   Future<Map<String, Quiz>> quizesBySubject(String subject) async {
 
-    final url = Uri.parse('https://134.122.67.190:5000/questionsBySubject?subject=$subject');
+    final url = Uri.parse('http://134.122.67.190:5000/questionsBySubject?subject=$subject');
 
     //GET /questionsBySubject?subject={param}
 

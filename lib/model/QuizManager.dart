@@ -27,7 +27,7 @@ class QuizManager {
 
     return result;*/
 
-    final url = Uri.parse('https://134.122.67.190:5000/subjects');
+    final url = Uri.parse('http://134.122.67.190:5000/subjects');
 
     //GET /subjects
     return http.get(url).then((response) {
@@ -48,7 +48,7 @@ class QuizManager {
     var questions = await collection.find(mongo.where.eq("subject", subject)).toList();
     return questions.map((e) => Question.fromMap(e)).toList();*/
 
-    final url = Uri.parse('https://134.122.67.190:5000/questionsBySubject?subject=$subject');
+    final url = Uri.parse('http://134.122.67.190:5000/questionsBySubject?subject=$subject');
 
     //GET /questionsBySubject?subject={param}
 

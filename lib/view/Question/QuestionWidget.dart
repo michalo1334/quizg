@@ -56,7 +56,8 @@ class _QuestionWidgetState extends State<QuestionWidget> {
   }
 
   void _showExplanationModalSheet(BuildContext context) {
-    var textBody = Markdown(data: widget.question.data.explanation);
+    var expl = widget.question.data.explanation;
+    var textBody = expl == null ? Container() : Markdown(data: expl);
 
     showModalBottomSheet<void>(
         context: context,
@@ -82,7 +83,7 @@ class _QuestionWidgetState extends State<QuestionWidget> {
       alignment: Alignment.topRight,
       child: IconButton(
           onPressed: (){_showExplanationModalSheet(context);},
-          icon: Icon(Icons.info, color: widget.question.data.explanation.isEmpty ? Colors.grey : Colors.red)
+          icon: Icon(Icons.info, color: widget.question.data.explanation == null ? Colors.grey : Colors.red)
       ),
     );
   }

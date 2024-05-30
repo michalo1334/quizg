@@ -41,6 +41,7 @@ dependencies:
   auto_size_text: ^3.0.0
   collection: ^1.18.0
   http: ^1.2.1
+  mongo_dart: ^0.10.2
 
 dev_dependencies:
   flutter_test:

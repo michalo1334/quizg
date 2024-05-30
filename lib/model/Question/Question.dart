@@ -7,6 +7,7 @@ import 'package:quizg/model/QuestionData.dart';
 I represent ABCD Question.
 I can act either as single or multiple choice - this behavior is controlled by exactlyOne property.
  */
+
 class Question extends ChangeNotifier {
   final QuestionData data;
 
@@ -15,8 +16,8 @@ class Question extends ChangeNotifier {
 
   Question(this.data);
 
-  factory Question.fromJson(Map<String, dynamic> json) {
-    return Question(QuestionData.fromJson(json));
+  factory Question.fromMap(Map<String, dynamic> map) {
+    return Question(QuestionData.fromMap(map));
   }
 
   void select(int choiceIndex) {
@@ -62,7 +63,11 @@ class Question extends ChangeNotifier {
   double get score {
     //Proportional, no negative score
     var correctCount = data.correct.length;
+    if(correctCount == 0 && selected.isEmpty) return 1.0;
+
     var perCorrect = 1.0 / correctCount;
+
+
 
     var score = max(perCorrect * selectedCorrectCount() - perCorrect * selectedIncorrectCount(), 0.0);
     return score;
@@ -74,4 +79,8 @@ class Question extends ChangeNotifier {
 
   bool get isSingleChoice => data.isSingleChoice;
   bool get isMultipleChoice => data.isMultipleChoice;
+
+  String toString() {
+    return "Question: ${data.questionText}, Choices: ${data.choices}, Correct: ${data.correct}, Explanation: ${data.explanation}";
+  }
 }

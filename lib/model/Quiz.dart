@@ -27,20 +27,6 @@ class Quiz extends ChangeNotifier {
     return Quiz(questions.toList(), shuffle: shuffle);
   }
 
-  static Future<Quiz> fromRemoteEndpointJson(String url,
-      {bool shuffle = false, onFinished}) async {
-    var response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      var jsonDecoded = jsonDecode(utf8.decode(response.bodyBytes));
-
-      var questions = List<Question>.from(jsonDecoded.map((e) => Question.fromJson(e)));
-      return Quiz(questions, shuffle: shuffle);
-    } else {
-      throw Exception('Failed to load questions');
-    }
-  }
-
   double get score => questions.fold(0, (previousValue, element) => previousValue + element.score);
 
   bool next() {

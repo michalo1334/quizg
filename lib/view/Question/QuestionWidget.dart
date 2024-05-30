@@ -16,12 +16,14 @@ class QuestionWidget extends StatefulWidget {
 
   String get layout => previewOnly ?
   """
-    text    explanation
-    choices choices
+    score   text    explanation
+    choices choices choices
+    divider divider divider
   """ :
   """
-    text    text
-    choices choices
+    text    text    text
+    choices choices choices
+    choices choices choices
   """;
 
   const QuestionWidget({super.key, required this.question, bool previewOnly = false}) : _previewOnly = previewOnly;
@@ -34,13 +36,15 @@ class _QuestionWidgetState extends State<QuestionWidget> {
   @override
   Widget build(BuildContext context) {
     return LayoutGrid(
-      columnSizes: [1.fr, 40.px],
-      rowSizes: [1.fr, 2.fr],
+      columnSizes: [50.px, 1.fr, 50.px],
+      rowSizes: [1.fr, 2.fr, 30.px],
       areas: widget.layout,
       children: [
         _buildQuestionText(context).inGridArea('text'),
         _buildChoices(context).inGridArea('choices'),
         if(widget.previewOnly) _buildExplanationButton(context).inGridArea('explanation'),
+        if(widget.previewOnly) _buildQuestionScore(context).inGridArea('score'),
+        if(widget.previewOnly) Divider().inGridArea('divider'),
       ],
     );
   }
@@ -66,12 +70,19 @@ class _QuestionWidgetState extends State<QuestionWidget> {
     );
   }
 
+  Widget _buildQuestionScore(BuildContext context) {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Text("pkt. ${widget.question.score.toStringAsFixed(2)}"),
+    );
+  }
+
   Widget _buildExplanationButton(BuildContext context) {
     return Align(
       alignment: Alignment.topRight,
       child: IconButton(
           onPressed: (){_showExplanationModalSheet(context);},
-          icon: Icon(Icons.info)
+          icon: Icon(Icons.info, color: widget.question.data.explanation.isEmpty ? Colors.grey : Colors.red)
       ),
     );
   }

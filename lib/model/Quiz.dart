@@ -41,6 +41,8 @@ class Quiz extends ChangeNotifier {
     }
   }
 
+  double get score => questions.fold(0, (previousValue, element) => previousValue + element.score);
+
   bool next() {
     _finished = !questionIterator.moveNext();
     notifyListeners();

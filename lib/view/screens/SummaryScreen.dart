@@ -48,14 +48,21 @@ class SummaryScreen extends StatelessWidget {
 
   Widget _buildStats(BuildContext context) {
     return SizedBox.expand(
-      child: Container(
-        color: Colors.blue,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Statystyki'),
-            Text('Punkty: 666'),
-          ],
+      child: FractionallySizedBox(
+        widthFactor: isMobile(context) ? 0.9 : 0.5,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black),
+            borderRadius: BorderRadius.circular(10),
+            shape: BoxShape.rectangle,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Statystyki'),
+              Text('Punkty: ${quiz.score}/${quiz.questions.length}'),
+            ],
+          ),
         ),
       ),
     );

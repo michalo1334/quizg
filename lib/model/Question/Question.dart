@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:quizg/model/QuestionData.dart';
 
@@ -55,6 +57,15 @@ class Question extends ChangeNotifier {
   }
   int selectedIncorrectCount() {
     return selected.difference(data.correct).length;
+  }
+
+  double get score {
+    //Proportional, no negative score
+    var correctCount = data.correct.length;
+    var perCorrect = 1.0 / correctCount;
+
+    var score = max(perCorrect * selectedCorrectCount() - perCorrect * selectedIncorrectCount(), 0.0);
+    return score;
   }
 
   bool isSelected(int choiceIndex) {

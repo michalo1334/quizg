@@ -65,6 +65,8 @@ class Question extends ChangeNotifier {
     var correctCount = data.correct.length;
     if(correctCount == 0 && selected.isEmpty) return 1.0;
 
+    if(correctCount == 0) return 0.0;
+
     var perCorrect = 1.0 / correctCount;
 
 

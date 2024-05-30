@@ -14,10 +14,14 @@ class QuestionWidget extends StatefulWidget {
 
   bool get previewOnly => _previewOnly;
 
-  static const String layout =
+  String get layout => previewOnly ?
   """
-    text     
-    choices   
+    text    explanation
+    choices choices
+  """ :
+  """
+    text    text
+    choices choices
   """;
 
   const QuestionWidget({super.key, required this.question, bool previewOnly = false}) : _previewOnly = previewOnly;
@@ -30,12 +34,13 @@ class _QuestionWidgetState extends State<QuestionWidget> {
   @override
   Widget build(BuildContext context) {
     return LayoutGrid(
-      columnSizes: [1.fr],
+      columnSizes: [1.fr, 40.px],
       rowSizes: [1.fr, 2.fr],
-      areas: QuestionWidget.layout,
+      areas: widget.layout,
       children: [
         _buildQuestionText(context).inGridArea('text'),
         _buildChoices(context).inGridArea('choices'),
+        if(widget.previewOnly) _buildExplanationButton(context).inGridArea('explanation'),
       ],
     );
   }
@@ -44,6 +49,31 @@ class _QuestionWidgetState extends State<QuestionWidget> {
     var sheet = MarkdownStyleSheet(p: Theme.of(context).textTheme.bodyLarge);
 
     return Center(child: MarkdownBody(data: widget.question.data.questionText, styleSheet: sheet,));
+  }
+
+  void _showExplanationModalSheet(BuildContext context) {
+    var textBody = Markdown(data: widget.question.data.explanation);
+
+    showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return SizedBox(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.6,
+            child: Center(child: textBody),
+          );
+        }
+    );
+  }
+
+  Widget _buildExplanationButton(BuildContext context) {
+    return Align(
+      alignment: Alignment.topRight,
+      child: IconButton(
+          onPressed: (){_showExplanationModalSheet(context);},
+          icon: Icon(Icons.info)
+      ),
+    );
   }
 
   Widget _buildChoices(BuildContext context) {
@@ -67,7 +97,7 @@ class _QuestionWidgetState extends State<QuestionWidget> {
     if(widget.previewOnly) {
       var selected = widget.question.isSelected(choiceIdx);
       var correct = widget.question.data.isCorrect(choiceIdx);
-      var exactlyOne = widget.question.exactlyOne;
+      var exactlyOne = widget.question.isSingleChoice;
 
       //"truth table"
       //Single choice - green if selected and correct, red if selected and incorrect

@@ -75,9 +75,7 @@ class HomeScreen extends StatelessWidget {
       builder: (context, snapshot) {
         if(snapshot.connectionState == ConnectionState.done) {
           if(snapshot.hasError) {
-            return Center(
-              child: Text("Error: ${snapshot.error}"),
-            );
+            throw Exception(snapshot.error);
           }
           else {
             var questionsBySubject = snapshot.data![0] as List<Question>;

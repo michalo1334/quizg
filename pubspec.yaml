@@ -42,6 +42,7 @@ dependencies:
   collection: ^1.18.0
   http: ^1.2.1
   mongo_dart: ^0.10.2
+  universal_io: ^2.2.2
 
 dev_dependencies:
   flutter_test:

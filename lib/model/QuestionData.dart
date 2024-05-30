@@ -27,7 +27,7 @@ class QuestionData {
     this.correct = const {},
     this.explanation,
     this.type = QuestionType.multipleChoice,
-    this.mongodbID,
+    required this.mongodbID,
   });
 
   factory QuestionData.fromMap(Map<String, dynamic> map) => QuestionData(
@@ -66,10 +66,13 @@ class QuestionData {
   bool get isMultipleChoice => type == QuestionType.multipleChoice;
 
   Map<String, dynamic> toMap() => {
-    "question": questionText,
-    "choices": choices,
-    "correct": correct.toList(),
-    "explanation": explanation,
-    "type": type == QuestionType.singleChoice ? "singleChoice" : "multipleChoice",
-  };
+        "_id": mongodbID,
+        "question": questionText,
+        "choices": choices,
+        "correct": correct.toList(),
+        "explanation": explanation,
+        "type": type == QuestionType.singleChoice
+            ? "singleChoice"
+            : "multipleChoice",
+      };
 }

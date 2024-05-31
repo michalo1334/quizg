@@ -27,20 +27,21 @@ class QuestionData {
     this.correct = const {},
     this.explanation,
     this.type = QuestionType.multipleChoice,
-    required this.mongodbID,
+    this.mongodbID,
   });
 
   factory QuestionData.fromMap(Map<String, dynamic> map) => QuestionData(
       questionText: map["question"],
       choices: List<String>.from(map["choices"]),
       correct: Set<int>.from(map["correct"]),
-      explanation: map["explanation"],
-      type: map["type"] == null
-          ? QuestionType.multipleChoice
-          : map["type"] == "singleChoice"
-              ? QuestionType.singleChoice
-              : QuestionType.multipleChoice,
-      mongodbID: map["_id"]);
+      explanation: map["explanation"] == "" ? null : map["explanation"],
+      type: switch(map['type']) {
+        null when map["correct"].length == 1 => QuestionType.singleChoice,
+        null => QuestionType.multipleChoice,
+        "singleChoice" => QuestionType.singleChoice,
+        "multipleChoice" => QuestionType.multipleChoice,
+        Object() => throw UnimplementedError(),
+      });
 
 //Return mapping letter->choice index, optionally shuffle
   Map<String, int> letteredChoices({bool shuffle = false}) {

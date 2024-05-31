@@ -6,9 +6,9 @@ import 'package:http/http.dart' as http;
 import 'Question/Question.dart';
 
 class Quiz extends ChangeNotifier {
-  late final List<Question> questions;
+  List<Question> questions;
 
-  final Iterator<Question> questionIterator;
+  Iterator<Question> questionIterator;
 
   bool _finished = false;
 
@@ -17,14 +17,15 @@ class Quiz extends ChangeNotifier {
     if (shuffle) {
       questions = List.from(questions);
       questions.shuffle();
+      questionIterator = questions.iterator;
     }
     next();
   }
 
   factory Quiz.fromPool(List<Question> pool, int count,
-      {bool shuffle = false}) {
-    var questions = pool.take(count);
-    return Quiz(questions.toList(), shuffle: shuffle);
+      {bool shuffle = true}) {
+    var qq = pool.take(count);
+    return Quiz(qq.toList(), shuffle: shuffle);
   }
 
   double get score => questions.fold(0, (previousValue, element) => previousValue + element.score);

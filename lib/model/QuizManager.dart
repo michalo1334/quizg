@@ -8,11 +8,6 @@ import 'Quiz.dart';
 class QuizManager {
   QuizManager._privateConstructor();
 
-  static const String connectionString =
-      "mongodb://quiz:quiz123@134.122.67.190:27017/Quiz?authSource=admin";
-  static const String databaseName = "quiz";
-  static const String collectionName = "questions";
-
   static final QuizManager instance = QuizManager._privateConstructor();
 
   Future<List<String>> subjects() async {
@@ -27,7 +22,7 @@ class QuizManager {
 
     return result;*/
 
-    final url = Uri.parse('http://134.122.67.190:5000/subjects');
+    final url = Uri.parse('https://data.michalo.works:9090/subjects');
 
     //GET /subjects
     return http.get(url).then((response) {
@@ -48,7 +43,7 @@ class QuizManager {
     var questions = await collection.find(mongo.where.eq("subject", subject)).toList();
     return questions.map((e) => Question.fromMap(e)).toList();*/
 
-    final url = Uri.parse('http://134.122.67.190:5000/questionsBySubject?subject=$subject');
+    final url = Uri.parse('https://data.michalo.works:9090/questionsBySubject?subject=$subject');
 
     //GET /questionsBySubject?subject={param}
 
@@ -64,7 +59,7 @@ class QuizManager {
 
   Future<Map<String, Quiz>> quizesBySubject(String subject) async {
 
-    final url = Uri.parse('http://134.122.67.190:5000/questionsBySubject?subject=$subject');
+    final url = Uri.parse('https://data.michalo.works:9090/questionsBySubject?subject=$subject');
 
     //GET /questionsBySubject?subject={param}
 
@@ -114,22 +109,6 @@ class QuizManager {
 
     return result.isSuccess;*/
 
-
-    final url = Uri.parse('http://134.122.67.190:5000/updateQuestion');
-
-    //POST /updateQuestion
-
-    //application/json
-    var result = await http.post(url, headers: {'Content-Type': 'application/json'}, body: jsonEncode(question.data.toMap()));
-
-    if (result.statusCode == 200) {
-      if(jsonDecode(result.body)['success'] == false) {
-        throw Exception('Failed to update question');
-      }
-    } else {
-      throw Exception(jsonDecode(result.body));
-    }
-
-    return true;
+    return false;
   }
 }

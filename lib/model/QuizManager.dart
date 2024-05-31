@@ -22,7 +22,7 @@ class QuizManager {
 
     return result;*/
 
-    final url = Uri.parse('https://data.michalo.works:9090/subjects');
+    final url = Uri.parse('https://data.michalo.works/subjects');
 
     //GET /subjects
     return http.get(url).then((response) {
@@ -43,7 +43,7 @@ class QuizManager {
     var questions = await collection.find(mongo.where.eq("subject", subject)).toList();
     return questions.map((e) => Question.fromMap(e)).toList();*/
 
-    final url = Uri.parse('https://data.michalo.works:9090/questionsBySubject?subject=$subject');
+    final url = Uri.parse('https://data.michalo.works/questionsBySubject?subject=$subject');
 
     //GET /questionsBySubject?subject={param}
 
@@ -59,7 +59,7 @@ class QuizManager {
 
   Future<Map<String, Quiz>> quizesBySubject(String subject) async {
 
-    final url = Uri.parse('https://data.michalo.works:9090/questionsBySubject?subject=$subject');
+    final url = Uri.parse('https://data.michalo.works/questionsBySubject?subject=$subject');
 
     //GET /questionsBySubject?subject={param}
 

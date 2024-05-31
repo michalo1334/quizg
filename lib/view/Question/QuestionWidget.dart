@@ -26,7 +26,7 @@ class QuestionWidget extends StatefulWidget {
     divider divider divider
   """ :
   """
-    text    text    text
+    type    text    text
     choices choices choices
     choices choices choices
   """;
@@ -50,8 +50,13 @@ class _QuestionWidgetState extends State<QuestionWidget> {
         if(widget.previewOnly) _buildExplanationButton(context).inGridArea('explanation'),
         if(widget.previewOnly) _buildQuestionScore(context).inGridArea('score'),
         if(widget.previewOnly) Divider().inGridArea('divider'),
+        if(!widget.previewOnly) _buildQuestionType(context).inGridArea('type'),
       ],
     );
+  }
+
+  Widget _buildQuestionType(BuildContext context) {
+    return widget.question.isSingleChoice ? Icon(Icons.radio_button_checked) : Icon(Icons.check_box);
   }
 
   Widget _buildQuestionText(BuildContext context) {

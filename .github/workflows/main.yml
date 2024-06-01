@@ -30,7 +30,7 @@ jobs:
 
       - name: Build Web
         run:
-          flutter build web --release --web-renderer html --base-href /quizg/
+          flutter build web --release --web-renderer canvaskit --base-href /quizg/
 
 
       - name: Upload Build
